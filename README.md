@@ -1,11 +1,16 @@
 # DOSW_TALLER-2
 ### Taller 2 - DOSW
 #### Integrantes:
-- Ana Gabriela Fiquitiva Poveda
+- Valeria Bermúdez Aguilar
+- Juan Andrés Suárez Fonseca
+- Samuel Leonardo Albarracín Vergara
+- Carlos David Astudillo Castiblanco
+- Ana Gabriela Fiqutiva Poveda
 ---
 ### Enunciado:
-Caso de estudio: GESTOR DE TAREAS COLABORATIVO
-Una empresa fintech quiere desarrollar un Sistema de Reportes Financieros que permita generar informes dinámicos y personalizables para sus clientes.
+- Caso de estudio: GESTOR DE TAREAS COLABORATIVO
+Una empresa fintech quiere desarrollar un Sistema de Reportes Financieros que permita generar informes dinámicos y 
+personalizables para sus clientes.
 El sistema debe permitir a los usuarios:
 1.	Crear reportes con información básica: título, fecha de generación, autor, lista de transacciones y contenido.
 2.	Extender dinámicamente los reportes con decoradores:
