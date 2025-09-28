@@ -1,6 +1,7 @@
 package edu.dosw.taller.DOSW_TALLER_2.model;
 import lombok.RequiredArgsConstructor;
 
+
 @RequiredArgsConstructor
 public abstract class ReporteDecorator implements Reporte {
     protected final Reporte reporte;
