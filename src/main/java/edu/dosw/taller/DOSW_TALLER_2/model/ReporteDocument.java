@@ -17,5 +17,5 @@ public class ReporteDocument {
     private String autor;
     private List<Transaccion> transacciones;
     private String contenido;
-    private String contenidoFinal; // resultado tras aplicar decoradores
+    private String contenidoFinal;
 }
