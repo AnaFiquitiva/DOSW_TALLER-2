@@ -53,9 +53,15 @@ solo el comportamiento que se desea extender.
 - **D**ependency Inversion Principle (DIP): Las clases dependen de abstracciones y no de implementaciones concretas.
 1. La clase `ReporteService` depende de la interfaz `ReporteRepository` en lugar de una implementación concreta, permitiendo cambiar la implementación del repositorio sin afectar el servicio.
 ### 5. Implementación de Patrones de Diseño:
-- 
 #### Patrón Decorator:
-El patrón Decorator se utiliza para añadir funcionalidades adicionales a los reportes sin modificar su estructura original
+El patrón Decorator se utiliza para añadir funcionalidades adicionales a los reportes sin modificar su estructura original. Es decir, que cada decorador toma un Reporte existente y extiende su comportamiento  y permite combinar funcionalidades de manera flexible. 
+Por ejemplo: un reporte con marca de agua + resumen + exportación.
 #### Patrón Builder:
-El patrón Builder se utiliza para construir objetos Reporte de manera flexible y paso a paso, permitiendo la creación de reportes con diferentes configuraciones.
+El patrón Builder se utiliza para construir objetos ReporteBasico de manera flexible y paso a paso, permitiendo la creación de reportes con diferentes configuraciones. 
+Debido a que el reporte tiene muchos atributos opcionales y obligatorios el builder garantiza que el objeto final sea inmutable y válidando que no falten título, autor, contenido o transacciones.
+### Cobertura y Analisis de Código:
+- Se utilizó JaCoCo para medir la cobertura de código.
+
+- Se utilizó SonarQube para el análisis de calidad del código.
+
 ### MONGODB:
