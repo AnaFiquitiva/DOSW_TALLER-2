@@ -28,13 +28,27 @@ El sistema debe permitir a los usuarios:
 - Se crearon ramas feature/ParteInicial para la implementación inicial del taller.
 - Se crearon ramas feature/model para la implementación de las clases bases (Modelo, Service y Controller).
 ### 2. Implementación de Diagrama de Componentes Específico:
+
+![Diagrama de Componentes](documents/uml/DiagramaDeComponentes.png)
+
 Explicación del Diagrama de Componentes:
+
+- El flujo inicia en el Report Controller, que recibe solicitudes REST
+
+- Pasa la petición al Report Service, que utiliza el Report Builder para construir el reporte
+
+- Si se requieren extensiones, el Report Decorator añade las características opcionales
+
+- El reporte final se guarda a través del Report Repository en MongoDB
+
+- Utils apoya en tareas generales para no sobrecargar el servicio
+  
 ###  3. Diagrama de Clases:
 ![Diagrama de Clases](documents/uml/DiagramaClases.png)   
 Explicación del Diagrama de Clases:
 - La interface `Reporte` representa el contrato común  para todos los tipos de reportes financieros con atributos como título, fecha de generación, autor, lista de transacciones y contenido.
 - La clase `Transaccion` representa una transacción financiera con atributos como monto, fecha y descripción.
-- La clase `ReporteBuilder` implementa el patrón Builder para construir intancias de `Reporte` de manera flexible y validando que no falte infromación necesaria.
+- La clase `ReporteBuilder` implementa el patrón Builder para construir intancias de `Reporte` de manera flexible y validando que no falte información necesaria.
 - La clase `ReporteDecorator` es una clase abstracta que extiende `Reporte` y sirve como base para los decoradores específicos delegando las llamadas a sus métodos base y permitiendo sobrescribir
   solo el comportamiento que se desea extender.
 - Las clases `ReporteConGraficas`, `ReporteConMarcaDeAgua`, `ReporteConResumen` y `ReporteExportable` son decoradores concretos que añaden funcionalidades específicas a los reportes .

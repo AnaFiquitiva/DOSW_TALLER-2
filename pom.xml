@@ -213,7 +213,6 @@
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <version>1.4.13</version>
             </plugin>
-
         </plugins>
     </build>
 </project>

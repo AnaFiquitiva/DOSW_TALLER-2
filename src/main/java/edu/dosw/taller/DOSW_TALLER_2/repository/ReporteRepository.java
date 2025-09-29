@@ -20,8 +20,4 @@ public interface ReporteRepository extends MongoRepository<ReporteDocument, Stri
      */
     List<ReporteDocument> findByAutor(String autor);
 
-    /**
-     * Nota: El filtrado por "tipo de contenido" se hará en el servicio con Streams,
-     * ya que el enunciado exige explícitamente el uso de programación funcional (Streams) para los filtros.
-     */
 }
