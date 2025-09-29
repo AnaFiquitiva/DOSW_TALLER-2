@@ -10,7 +10,7 @@ public class CrearReporteDTO {
     private String contenido;
     private List<TransaccionDTO> transacciones;
 
-    // Opciones de decoración (booleanos)
+
     private boolean conGraficas = false;
     private boolean conMarcaAgua = false;
     private boolean conResumen = false;
