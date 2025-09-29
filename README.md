@@ -72,5 +72,13 @@ Debido a que el reporte tiene muchos atributos opcionales y obligatorios el buil
 Antes de cada prueba se limpia la base de datos para asegurar resultados consistentes. Luego se verifican varios escenarios: guardar y recuperar un reporte individual, almacenar múltiples reportes y consultarlos todos, buscar reportes por autor y filtrar por fecha de generación.
 ![alt text](documents/imagenes/reporterepositorytes.png)
 En conjunto, estas pruebas garantizan que las operaciones básicas de persistencia (guardar, leer y consultar por atributos) funcionen de manera correcta dentro del sistema.
+
+### Jacoco:
+![alt text](documents/imagenes/Test.png)
+
+![alt text](documents/imagenes/Jacoco.png)
+
+
+
 ### Sonar:
 ![alt text](documents/imagenes/sonar.png)
