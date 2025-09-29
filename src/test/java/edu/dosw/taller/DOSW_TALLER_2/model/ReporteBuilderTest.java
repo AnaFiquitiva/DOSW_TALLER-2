@@ -1,27 +1,15 @@
 package edu.dosw.taller.DOSW_TALLER_2.model;
 
 import org.junit.jupiter.api.Test;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ReporteBuilderTest {
 
     @Test
-<<<<<<< HEAD
-    void testBuildReporteBasico() {
-        Transaccion t = new Transaccion("1", "Compra", BigDecimal.TEN, LocalDate.now(), "Alimentos");
-
-        ReporteBasico reporte = new ReporteBuilder()
-                .conTitulo("Titulo")
-                .conFechaGeneracion(LocalDate.now())
-                .conAutor("Autor")
-                .conTransaccion(t)
-                .conContenido("Contenido")
-                .build();
-=======
     void reporteBasico_gettersFuncionanCorrectamente() {
         Transaccion t = new Transaccion("1", "Compra", BigDecimal.TEN, LocalDate.of(2025, 9, 28), "Gastos");
         ReporteBasico reporte = new ReporteBasico("Titulo", LocalDate.of(2025, 9, 28), "Autor", List.of(t), "Contenido");
@@ -37,39 +25,26 @@ class ReporteBuilderTest {
     void build_deberiaCrearReporteBasicoCorrectamente() {
         Transaccion t = new Transaccion("1", "Compra", new BigDecimal("100.50"), LocalDate.of(2025, 9, 28), "Gastos");
 
-        ReporteBuilder builder = new ReporteBuilder();
-
-        ReporteBuilder resultadoTitulo = builder.conTitulo("Reporte Prueba");
-        ReporteBuilder resultadoFecha = builder.conFechaGeneracion(LocalDate.of(2025, 9, 28));
-        ReporteBuilder resultadoAutor = builder.conAutor("AutorTest");
-        ReporteBuilder resultadoContenido = builder.conContenido("Contenido de prueba");
-        ReporteBuilder resultadoTransaccion = builder.conTransaccion(t);
-
-
-        assertSame(builder, resultadoTitulo);
-        assertSame(builder, resultadoFecha);
-        assertSame(builder, resultadoAutor);
-        assertSame(builder, resultadoContenido);
-        assertSame(builder, resultadoTransaccion);
-
+        ReporteBuilder builder = new ReporteBuilder()
+                .conTitulo("Reporte Prueba")
+                .conFechaGeneracion(LocalDate.of(2025, 9, 28))
+                .conAutor("AutorTest")
+                .conContenido("Contenido de prueba")
+                .conTransaccion(t);
 
         ReporteBasico reporte = builder.build();
->>>>>>> 671e0fdc049d389e27d96a7b40bc33a689573778
 
         assertNotNull(reporte);
-        assertEquals("Titulo", reporte.getTitulo());
-        assertEquals("Autor", reporte.getAutor());
-        assertEquals("Contenido", reporte.getContenido());
+        assertEquals("Reporte Prueba", reporte.getTitulo());
+        assertEquals("AutorTest", reporte.getAutor());
+        assertEquals("Contenido de prueba", reporte.getContenido());
         assertEquals(1, reporte.getTransacciones().size());
+        assertEquals(t, reporte.getTransacciones().get(0));
     }
 
     @Test
-<<<<<<< HEAD
-    void testBuildSinContenido() {
-=======
     void build_sinCamposObligatorios_lanzaExcepcion() {
         ReporteBuilder builder = new ReporteBuilder();
-
         IllegalStateException exception = assertThrows(IllegalStateException.class, builder::build);
         assertTrue(exception.getMessage().contains("Faltan campos obligatorios"));
     }
@@ -79,13 +54,18 @@ class ReporteBuilderTest {
         Transaccion t1 = new Transaccion("1", "Compra", new BigDecimal("50.00"), LocalDate.of(2025, 9, 28), "Gastos");
         Transaccion t2 = new Transaccion("2", "Venta", new BigDecimal("75.00"), LocalDate.of(2025, 9, 28), "Ingresos");
 
->>>>>>> 671e0fdc049d389e27d96a7b40bc33a689573778
         ReporteBuilder builder = new ReporteBuilder()
-                .conTitulo("Titulo")
+                .conTitulo("Reporte")
                 .conAutor("Autor")
-                .conTransaccion(new Transaccion("1", "D", BigDecimal.ONE, LocalDate.now(), "C"));
+                .conContenido("Contenido")
+                .conFechaGeneracion(LocalDate.now())
+                .conTransaccion(t1)
+                .conTransaccion(t2);
 
-        assertThrows(IllegalStateException.class, builder::build);
+        ReporteBasico reporte = builder.build();
+
+        assertEquals(2, reporte.getTransacciones().size());
+        assertTrue(reporte.getTransacciones().containsAll(List.of(t1, t2)));
     }
 
     @Test
@@ -117,5 +97,4 @@ class ReporteBuilderTest {
 
         assertThrows(IllegalStateException.class, builder::build);
     }
-
 }
