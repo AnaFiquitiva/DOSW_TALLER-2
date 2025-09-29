@@ -1,79 +1,39 @@
 package edu.dosw.taller.DOSW_TALLER_2.model;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ReporteDecoratorTest {
+    static class DummyReporte implements Reporte {
+        @Override public String generarReporte() { return "Reporte base"; }
+        @Override public String getTitulo() { return "TituloX"; }
+        @Override public LocalDate getFechaGeneracion() { return LocalDate.of(2025, 9, 28); }
+        @Override public String getAutor() { return "AutorX"; }
+        @Override public java.util.List<Transaccion> getTransacciones() { return Collections.emptyList(); }
+        @Override public String getContenido() { return "ContenidoX"; }
+    }
 
-    private Reporte reporteFake;
-    private ReporteDecorator decorator;
-
-    @BeforeEach
-    void setUp() {
-
-        reporteFake = new Reporte() {
-            @Override
-            public String getTitulo() { return "Título de prueba"; }
-
-            @Override
-            public LocalDate getFechaGeneracion() { return LocalDate.of(2025, 9, 28); }
-
-            @Override
-            public String getAutor() { return "Andrés"; }
-
-            @Override
-            public List<Transaccion> getTransacciones() {
-                return List.of(new Transaccion("Compra X", BigDecimal.valueOf(99.99)));
-            }
-
-            @Override
-            public String getContenido() { return "Contenido base"; }
-
-            @Override
-            public String generarReporte() { return "Reporte base generado"; }
-        };
-
-
-        decorator = new ReporteDecorator(reporteFake) {
-            @Override
-            public String generarReporte() {
-                return "Reporte decorado";
-            }
-        };
+    static class DummyDecorator extends ReporteDecorator {
+        public DummyDecorator(Reporte reporte) { super(reporte); }
+        @Override public String generarReporte() { return reporte.generarReporte(); }
     }
 
     @Test
-    void testDelegarGetTitulo() {
-        assertEquals("Título de prueba", decorator.getTitulo());
-    }
+    void testDelegacionDeMetodos() {
+        Reporte base = new DummyReporte();
+        ReporteDecorator decorator = new DummyDecorator(base);
 
-    @Test
-    void testDelegarGetFechaGeneracion() {
+        assertEquals("TituloX", decorator.getTitulo());
         assertEquals(LocalDate.of(2025, 9, 28), decorator.getFechaGeneracion());
+        assertEquals("AutorX", decorator.getAutor());
+        assertEquals(Collections.emptyList(), decorator.getTransacciones());
+        assertEquals("ContenidoX", decorator.getContenido());
+        assertEquals("Reporte base", decorator.generarReporte());
     }
 
-    @Test
-    void testDelegarGetAutor() {
-        assertEquals("Andrés", decorator.getAutor());
-    }
-
-    @Test
-    void testDelegarGetTransacciones() {
-        List<Transaccion> transacciones = decorator.getTransacciones();
-        assertEquals(1, transacciones.size());
-        assertEquals("Compra X", transacciones.get(0).getDescripcion());
-        assertEquals(BigDecimal.valueOf(99.99), transacciones.get(0).getMonto());
-    }
-
-    @Test
-    void testDelegarGetContenido() {
-        assertEquals("Contenido base", decorator.getContenido());
-    }
 }
 

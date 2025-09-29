@@ -1,51 +1,39 @@
 package edu.dosw.taller.DOSW_TALLER_2.model;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ReporteExportableTest {
 
-    private Reporte reporteBase;
-
-    @BeforeEach
-    void setUp() {
-
-        reporteBase = new Reporte() {
-            @Override
-            public String getTitulo() { return "Reporte base"; }
-
-            @Override
-            public LocalDate getFechaGeneracion() { return LocalDate.of(2025, 9, 28); }
-
-            @Override
-            public String getAutor() { return "Andrés"; }
-
-            @Override
-            public java.util.List<Transaccion> getTransacciones() { return Collections.emptyList(); }
-
-            @Override
-            public String getContenido() { return "Contenido"; }
-
-            @Override
-            public String generarReporte() { return "Este es el reporte original"; }
-        };
-    }
-
     @Test
-    void testGenerarReporteIncluyeReporteBaseYExportable() {
-        ReporteExportable reporte = new ReporteExportable(reporteBase);
+    void testGenerarReporte() {
+        Reporte dummyReporte = new Reporte() {
+            @Override
+            public String generarReporte() {
+                return "Contenido reporte";
+            }
 
+            @Override public String getTitulo() { return "TituloX"; }
+            @Override public LocalDate getFechaGeneracion() { return LocalDate.of(2025, 9, 28); }
+            @Override public String getAutor() { return "AutorX"; }
+            @Override public List<Transaccion> getTransacciones() { return Collections.emptyList(); }
+            @Override public String getContenido() { return "Contenido"; }
+        };
+
+        ReporteExportable reporte = new ReporteExportable(dummyReporte);
         String resultado = reporte.generarReporte();
 
-
-        assertTrue(resultado.contains("Este es el reporte original"));
-
-
-        assertTrue(resultado.contains("[+] Exportable a PDF y Excel."));
+        assertTrue(resultado.contains("Contenido reporte"));
+        assertTrue(resultado.contains("Exportable a PDF y Excel."));
+        assertEquals("TituloX", reporte.getTitulo());
+        assertEquals("AutorX", reporte.getAutor());
+        assertEquals("Contenido", reporte.getContenido());
     }
+
 }
