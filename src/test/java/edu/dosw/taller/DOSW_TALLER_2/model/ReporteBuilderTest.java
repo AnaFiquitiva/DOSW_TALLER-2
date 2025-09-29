@@ -10,6 +10,19 @@ import java.util.List;
 class ReporteBuilderTest {
 
     @Test
+    void reporteBuilder_gettersFuncionanCorrectamente() {
+        Transaccion t = new Transaccion("1", "Compra", BigDecimal.TEN, LocalDate.now(), "Gastos");
+        ReporteBasico reporte = new ReporteBasico("Titulo", LocalDate.of(2025, 9, 28), "Autor", List.of(t), "Contenido");
+
+        assertEquals("Titulo", reporte.getTitulo());
+        assertEquals(LocalDate.of(2025, 9, 28), reporte.getFechaGeneracion());
+        assertEquals("Autor", reporte.getAutor());
+        assertEquals("Contenido", reporte.getContenido());
+        assertEquals(1, reporte.getTransacciones().size());
+    }
+
+
+    @Test
     void build_deberiaCrearReporteBasicoCorrectamente() {
 
         Transaccion t = new Transaccion("1", "Compra", new BigDecimal("100.50"), LocalDate.of(2025, 9, 28), "Gastos");
