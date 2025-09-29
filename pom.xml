@@ -23,6 +23,11 @@
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <junit.jupiter.version>5.10.0</junit.jupiter.version>
         <jacoco.version>0.8.11</jacoco.version>
+        <sonar.projectKey>DOSW_TALLER-2</sonar.projectKey>
+        <sonar.projectName>DOSW_TALLER-2</sonar.projectName>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
+        <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.token>sqa_e411bb79d3dc60f682d16ac69eed35dcfeeb12a4</sonar.token>
     </properties>
 
     <dependencies>
