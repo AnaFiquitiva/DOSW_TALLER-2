@@ -65,3 +65,12 @@ Debido a que el reporte tiene muchos atributos opcionales y obligatorios el buil
 - Se utilizó SonarQube para el análisis de calidad del código.
 
 ### MONGODB:
+![alt text](documents/imagenes/mongobd.png)
+-Aquí se puede evidenciar como se logró la conexión a la base de datos, además, para la realización de los post y los gets, se usó la clase de ReporteControllerIntegrationTest, La clase ReporteControllerIntegrationTest contiene pruebas de integración para verificar que el controlador REST de reportes responda correctamente a las peticiones HTTP.
+![alt text](documents/imagenes/reportetest.png)  
+-La clase ReporteRepositoryTest contiene pruebas con JUnit y Spring Boot para validar el correcto funcionamiento del repositorio ReporteRepository, encargado de manejar los documentos ReporteDocument.
+Antes de cada prueba se limpia la base de datos para asegurar resultados consistentes. Luego se verifican varios escenarios: guardar y recuperar un reporte individual, almacenar múltiples reportes y consultarlos todos, buscar reportes por autor y filtrar por fecha de generación.
+![alt text](documents/imagenes/reporterepositorytes.png)
+En conjunto, estas pruebas garantizan que las operaciones básicas de persistencia (guardar, leer y consultar por atributos) funcionen de manera correcta dentro del sistema.
+### Sonar:
+![alt text](documents/imagenes/sonar.png)
