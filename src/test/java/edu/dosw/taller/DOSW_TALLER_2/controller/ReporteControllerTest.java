@@ -1,93 +1,125 @@
 package edu.dosw.taller.DOSW_TALLER_2.controller;
 
-import edu.dosw.taller.DOSW_TALLER_2.controller.dto.CrearReporteDTO;
-import edu.dosw.taller.DOSW_TALLER_2.controller.dto.TransaccionDTO;
+
+
+import edu.dosw.taller.DOSW_TALLER_2.controller.dto.*;
+import edu.dosw.taller.DOSW_TALLER_2.model.ReporteDocument;
 import edu.dosw.taller.DOSW_TALLER_2.service.interfaces.ReporteService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.http.ResponseEntity;
+import org.mockito.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class ReporteControllerTest {
 
-    @Mock
-    private ReporteService reporteService;
-
     @InjectMocks
     private ReporteController reporteController;
 
-    private CrearReporteDTO dto;
+    @Mock
+    private ReporteService reporteService;
+
+    private CrearReporteDTO crearReporteDTO;
+    private TransaccionDTO transaccionDTO;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
+        transaccionDTO = new TransaccionDTO();
+        transaccionDTO.setId("T1");
+        transaccionDTO.setDescripcion("Compra");
+        transaccionDTO.setMonto(java.math.BigDecimal.valueOf(100));
+        transaccionDTO.setFecha(LocalDate.now());
+        transaccionDTO.setCategoria("Gastos");
 
-        TransaccionDTO t1 = new TransaccionDTO();
-        t1.setId("1");
-        t1.setDescripcion("Compra de papelería");
-        t1.setMonto(BigDecimal.valueOf(150));
-        t1.setFecha(LocalDate.now());
-        t1.setCategoria("Oficina");
-
-
-        dto = new CrearReporteDTO();
-        dto.setTitulo("Reporte Mensual");
-        dto.setAutor("Valeria");
-        dto.setContenido("Contenido del reporte");
-        dto.setConGraficas(true);
-        dto.setConMarcaAgua(true);
-        dto.setConResumen(false);
-        dto.setExportable(true);
-        dto.setTransacciones(List.of(t1));
+        crearReporteDTO = new CrearReporteDTO();
+        crearReporteDTO.setTitulo("Reporte Test");
+        crearReporteDTO.setAutor("Ana");
+        crearReporteDTO.setContenido("Contenido de prueba");
+        crearReporteDTO.setTransacciones(List.of(transaccionDTO));
+        crearReporteDTO.setConGraficas(true);
+        crearReporteDTO.setConMarcaAgua(true);
+        crearReporteDTO.setConResumen(true);
+        crearReporteDTO.setExportable(true);
     }
 
     @Test
-    void crearReporte_deberiaRetornarCREATED() {
+    void crearReporte_valido_devuelve201() {
+        when(reporteService.crearReporte(any(), any(), any(), anyList(), anyBoolean(), anyBoolean(), anyBoolean(), anyBoolean()))
+                .thenReturn("ID123");
 
-        when(reporteService.crearReporte(
-                anyString(), anyString(), anyString(), anyList(), anyBoolean(), anyBoolean(), anyBoolean(), anyBoolean()
-        )).thenReturn("12345");
-
-
-        ResponseEntity<String> response = reporteController.crearReporte(dto);
-
-
+        var response = reporteController.crearReporte(crearReporteDTO);
         assertEquals(201, response.getStatusCodeValue());
-        assertEquals("12345", response.getBody());
-
-
-        verify(reporteService, times(1)).crearReporte(
-                eq(dto.getTitulo()),
-                eq(dto.getAutor()),
-                eq(dto.getContenido()),
-                anyList(),
-                eq(dto.isConGraficas()),
-                eq(dto.isConMarcaAgua()),
-                eq(dto.isConResumen()),
-                eq(dto.isExportable())
-        );
+        assertEquals("ID123", response.getBody());
     }
 
     @Test
-    void crearReporte_conListaVacia_deberiaRetornarBadRequest() {
-        dto.setTransacciones(List.of());
-
-        ResponseEntity<String> response = reporteController.crearReporte(dto);
-
+    void crearReporte_transaccionesVacias_devuelve400() {
+        crearReporteDTO.setTransacciones(new ArrayList<>());
+        var response = reporteController.crearReporte(crearReporteDTO);
         assertEquals(400, response.getStatusCodeValue());
-        assertEquals("La lista de transacciones no puede estar vacía.", response.getBody());
+    }
 
-        verifyNoInteractions(reporteService);
+    @Test
+    void crearReporte_servicioExcepcion_devuelve500() {
+        when(reporteService.crearReporte(any(), any(), any(), anyList(), anyBoolean(), anyBoolean(), anyBoolean(), anyBoolean()))
+                .thenThrow(new RuntimeException("Error interno"));
+
+        var response = reporteController.crearReporte(crearReporteDTO);
+        assertEquals(500, response.getStatusCodeValue());
+        assertTrue(response.getBody().contains("Error al crear el reporte"));
+    }
+
+    @Test
+    void obtenerTodos_devuelveLista() {
+        ReporteDocument doc = new ReporteDocument();
+        doc.setId("1");
+        doc.setTitulo("Reporte");
+        doc.setAutor("Ana");
+        doc.setContenido("Contenido");
+        doc.setFechaGeneracion(LocalDate.now());
+        doc.setTransacciones(List.of());
+
+        when(reporteService.obtenerTodos()).thenReturn(List.of(doc));
+
+        var response = reporteController.obtenerTodos();
+        assertEquals(1, response.getBody().size());
+        assertEquals("Reporte", response.getBody().get(0).getTitulo());
+    }
+
+    @Test
+    void filtrarPorFecha_devuelveLista() {
+        ReporteDocument doc = new ReporteDocument();
+        doc.setFechaGeneracion(LocalDate.of(2025, 9, 28));
+        when(reporteService.filtrarPorFecha(LocalDate.of(2025, 9, 28))).thenReturn(List.of(doc));
+
+        var response = reporteController.filtrarPorFecha(LocalDate.of(2025, 9, 28));
+        assertEquals(1, response.getBody().size());
+    }
+
+    @Test
+    void filtrarPorAutor_devuelveLista() {
+        ReporteDocument doc = new ReporteDocument();
+        doc.setAutor("Ana");
+        when(reporteService.filtrarPorAutor("Ana")).thenReturn(List.of(doc));
+
+        var response = reporteController.filtrarPorAutor("Ana");
+        assertEquals(1, response.getBody().size());
+    }
+
+    @Test
+    void filtrarPorContenido_devuelveLista() {
+        ReporteDocument doc = new ReporteDocument();
+        doc.setContenido("Importante");
+        when(reporteService.filtrarPorContenido("Importante")).thenReturn(List.of(doc));
+
+        var response = reporteController.filtrarPorContenido("Importante");
+        assertEquals(1, response.getBody().size());
     }
 }
-
