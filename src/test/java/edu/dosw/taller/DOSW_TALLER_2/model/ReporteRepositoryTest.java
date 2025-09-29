@@ -103,8 +103,8 @@ class ReporteRepositoryTest {
 
     @Test
     void buscarPorFechaGeneracion() {
-        LocalDate fechaHist = LocalDate.of(2025, 9, 28);  // Fecha fija
-        LocalDate fechaOtra = fechaHist.plusDays(1);      // Fecha distinta
+        LocalDate fechaHist = LocalDate.of(2025, 9, 28);
+        LocalDate fechaOtra = fechaHist.plusDays(1);
 
         ReporteDocument reporte1 = new ReporteDocument();
         reporte1.setTitulo("Reporte histórico");
@@ -118,7 +118,7 @@ class ReporteRepositoryTest {
 
         ReporteDocument reporte2 = new ReporteDocument();
         reporte2.setTitulo("Reporte distinto");
-        reporte2.setFechaGeneracion(fechaOtra); // 👈 otra fecha
+        reporte2.setFechaGeneracion(fechaOtra);
         reporte2.setAutor("Carlos");
         reporte2.setTransacciones(List.of(
                 new Transaccion("21", "Pago", BigDecimal.valueOf(75), fechaOtra, "Servicios")
