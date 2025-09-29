@@ -10,8 +10,8 @@ import java.util.List;
 class ReporteBuilderTest {
 
     @Test
-    void reporteBuilder_gettersFuncionanCorrectamente() {
-        Transaccion t = new Transaccion("1", "Compra", BigDecimal.TEN, LocalDate.now(), "Gastos");
+    void reporteBasico_gettersFuncionanCorrectamente() {
+        Transaccion t = new Transaccion("1", "Compra", BigDecimal.TEN, LocalDate.of(2025, 9, 28), "Gastos");
         ReporteBasico reporte = new ReporteBasico("Titulo", LocalDate.of(2025, 9, 28), "Autor", List.of(t), "Contenido");
 
         assertEquals("Titulo", reporte.getTitulo());
@@ -21,19 +21,27 @@ class ReporteBuilderTest {
         assertEquals(1, reporte.getTransacciones().size());
     }
 
-
     @Test
     void build_deberiaCrearReporteBasicoCorrectamente() {
-
         Transaccion t = new Transaccion("1", "Compra", new BigDecimal("100.50"), LocalDate.of(2025, 9, 28), "Gastos");
 
-        ReporteBasico reporte = new ReporteBuilder()
-                .conTitulo("Reporte Prueba")
-                .conAutor("AutorTest")
-                .conContenido("Contenido de prueba")
-                .conFechaGeneracion(LocalDate.of(2025, 9, 28))
-                .conTransaccion(t)
-                .build();
+        ReporteBuilder builder = new ReporteBuilder();
+
+        ReporteBuilder resultadoTitulo = builder.conTitulo("Reporte Prueba");
+        ReporteBuilder resultadoFecha = builder.conFechaGeneracion(LocalDate.of(2025, 9, 28));
+        ReporteBuilder resultadoAutor = builder.conAutor("AutorTest");
+        ReporteBuilder resultadoContenido = builder.conContenido("Contenido de prueba");
+        ReporteBuilder resultadoTransaccion = builder.conTransaccion(t);
+
+
+        assertSame(builder, resultadoTitulo);
+        assertSame(builder, resultadoFecha);
+        assertSame(builder, resultadoAutor);
+        assertSame(builder, resultadoContenido);
+        assertSame(builder, resultadoTransaccion);
+
+
+        ReporteBasico reporte = builder.build();
 
 
         assertEquals("Reporte Prueba", reporte.getTitulo());
@@ -53,7 +61,7 @@ class ReporteBuilderTest {
     }
 
     @Test
-    void conTransaccion_agregaTransaccionesCorrectamente() {
+    void conTransaccion_agregaVariasTransaccionesCorrectamente() {
         Transaccion t1 = new Transaccion("1", "Compra", new BigDecimal("50.00"), LocalDate.of(2025, 9, 28), "Gastos");
         Transaccion t2 = new Transaccion("2", "Venta", new BigDecimal("75.00"), LocalDate.of(2025, 9, 28), "Ingresos");
 
