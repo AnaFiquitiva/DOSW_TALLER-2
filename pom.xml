@@ -3,6 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -23,6 +24,20 @@
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <junit.jupiter.version>5.10.0</junit.jupiter.version>
         <jacoco.version>0.8.11</jacoco.version>
+
+
+        <jacoco.exclusions.pattern>
+            **/model/**,
+            **/dto/**,
+            **/enums/**,
+            **/config/**,
+            **/security/**,
+            **/mapper/**,
+            **/Application.class,
+            **/*_Lombok.class
+        </jacoco.exclusions.pattern>
+
+
         <sonar.projectKey>DOSW_TALLER-2</sonar.projectKey>
         <sonar.projectName>DOSW_TALLER-2</sonar.projectName>
         <sonar.host.url>http://localhost:9000</sonar.host.url>
@@ -53,7 +68,6 @@
             <scope>provided</scope>
         </dependency>
 
-
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
@@ -78,6 +92,7 @@
 
     <build>
         <plugins>
+
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -138,6 +153,39 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>${jacoco.exclusions.pattern}</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>${jacoco.exclusions.pattern}</exclude>
+                            </excludes>
+                            <rules>
+                                <rule>
+                                    <element>PACKAGE</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>INSTRUCTION</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.85</minimum>
+                                        </limit>
+                                        <limit>
+                                            <counter>BRANCH</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.85</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -165,6 +213,7 @@
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <version>1.4.13</version>
             </plugin>
+
         </plugins>
     </build>
 </project>
